@@ -1,0 +1,683 @@
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Смарт-смета ремонта | 65 м² | Дизайн-проект</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #F4F9FF;
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, sans-serif;
+            padding: 20px 16px 56px;
+            color: #172C3F;
+        }
+
+        .app-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ГЛАВНЫЙ ЗАГОЛОВОК С ЭФФЕКТОМ СТЕКЛА/ГРАДИЕНТА */
+        .hero {
+            text-align: center;
+            margin-bottom: 28px;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 6vw, 2.8rem);
+            font-weight: 800;
+            background: linear-gradient(125deg, #1A4972, #2E6A9E, #578FBF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            letter-spacing: -0.01em;
+            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.03);
+            margin-bottom: 8px;
+        }
+
+        .hero .subhead {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: #4875A3;
+            border-bottom: 1px solid rgba(72, 117, 163, 0.3);
+            display: inline-block;
+            padding-bottom: 4px;
+        }
+
+        .budget-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(46, 106, 158, 0.08);
+            backdrop-filter: blur(2px);
+            padding: 6px 18px;
+            border-radius: 60px;
+            margin-top: 14px;
+            font-weight: 600;
+            font-size: 0.8rem;
+            color: #1D5A8E;
+            border: 1px solid rgba(46, 106, 158, 0.25);
+        }
+
+        /* Прогресс-бар */
+        .progress-section {
+            background: #E3ECF5;
+            border-radius: 30px;
+            height: 8px;
+            width: 100%;
+            margin: 20px 0 8px;
+        }
+        .progress-fill {
+            background: linear-gradient(90deg, #276A9E, #5290C7);
+            width: 0%;
+            height: 100%;
+            border-radius: 30px;
+            transition: width 0.3s ease;
+        }
+        .step-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #426E96;
+            margin-bottom: 22px;
+        }
+
+        /* КАРТОЧКА РАЗДЕЛА - АКЦЕНТНАЯ ИЕРАРХИЯ */
+        .section-card {
+            background: #FFFFFF;
+            border-radius: 32px;
+            box-shadow: 0 18px 32px -12px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.02);
+            padding: 24px 22px 32px;
+            transition: all 0.2s;
+            border: 1px solid rgba(100, 140, 180, 0.15);
+        }
+
+        .section-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 14px;
+            border-left: 5px solid #2B6A9E;
+            padding-left: 18px;
+        }
+        .section-title {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: linear-gradient(145deg, #1A4A72, #2A628F);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .section-id {
+            background: #EFF4FA;
+            border-radius: 40px;
+            padding: 4px 14px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #2B6A9E;
+        }
+
+        .section-desc {
+            background: #F8FBFE;
+            padding: 12px 18px;
+            border-radius: 20px;
+            margin: 16px 0 22px;
+            font-size: 0.9rem;
+            color: #365F86;
+            border-left: 3px solid #98BBDC;
+        }
+
+        /* ТАБЛИЦА — АДАПТИВ */
+        .table-responsive {
+            overflow-x: auto;
+            margin: 20px 0 20px;
+            border-radius: 20px;
+        }
+        .cost-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+            min-width: 680px;
+        }
+        .cost-table th {
+            background: #F0F6FD;
+            padding: 14px 10px;
+            text-align: left;
+            font-weight: 700;
+            color: #1E5A85;
+            border-bottom: 1px solid #DDE7F2;
+        }
+        .cost-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #F0F4FA;
+            vertical-align: middle;
+        }
+        .plan-text {
+            font-weight: 600;
+            color: #1F3F5C;
+        }
+        .sum-plan-cell {
+            font-weight: 700;
+            color: #217A4B;
+            background: #F0F9F2;
+            border-radius: 14px;
+        }
+        .fact-input {
+            width: 120px;
+            padding: 8px 8px;
+            border-radius: 14px;
+            border: 1px solid #C9DCF0;
+            font-size: 0.85rem;
+            font-weight: 500;
+            font-family: 'Inter', monospace;
+            background: #FFFFFF;
+            transition: 0.2s;
+        }
+        .fact-input:focus {
+            outline: none;
+            border-color: #2B6A9E;
+            box-shadow: 0 0 0 3px rgba(43, 106, 158, 0.15);
+        }
+        .extra-row-input {
+            background-color: #FEF9E6;
+        }
+
+        /* БЛОК ИТОГОВ РАЗДЕЛА — АКЦЕНТ */
+        .section-summary {
+            background: linear-gradient(115deg, #F9FCFE 0%, #F2F8FF 100%);
+            border-radius: 28px;
+            padding: 18px 24px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 18px;
+            margin: 18px 0 20px;
+            border: 1px solid #D9E9F7;
+        }
+        .summary-card {
+            background: white;
+            padding: 10px 22px;
+            border-radius: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            min-width: 170px;
+        }
+        .summary-label {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            color: #6C8EAD;
+        }
+        .summary-value {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #1F5780;
+        }
+        .summary-value.fact {
+            color: #0F6E3F;
+        }
+
+        /* КНОПКИ НАВИГАЦИИ (дальше / назад) */
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            gap: 16px;
+            margin-top: 24px;
+        }
+        .btn {
+            border: none;
+            background: #F0F5FC;
+            padding: 12px 28px;
+            border-radius: 44px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: 0.2s;
+            font-family: inherit;
+            color: #2A5982;
+        }
+        .btn-primary {
+            background: linear-gradient(95deg, #2A6A9E, #3580B8);
+            color: white;
+            box-shadow: 0 4px 12px rgba(42, 106, 158, 0.25);
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: linear-gradient(95deg, #1F5A88, #2C6E9E);
+        }
+        .btn-outline:hover {
+            background: #E6EEF8;
+            transform: translateY(-1px);
+        }
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ГЛОБАЛЬНЫЙ ИТОГ — ПРОФЕССИОНАЛЬНЫЙ */
+        .global-total {
+            background: linear-gradient(125deg, #FFFFFF 0%, #F7FBFE 100%);
+            border-radius: 32px;
+            padding: 20px 28px;
+            margin-top: 40px;
+            border: 1px solid #CCE1F5;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+        .global-stats {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+        .global-item {
+            background: white;
+            border-radius: 28px;
+            padding: 10px 24px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.02);
+        }
+        .badge-limit {
+            background: #EBF3FA;
+            color: #2A6A9E;
+            border-radius: 40px;
+            padding: 6px 20px;
+            font-weight: 600;
+            font-size: 0.75rem;
+        }
+        /* БЛОК КОНТАКТОВ - активная ссылка для email */
+        .contact-footer {
+            margin-top: 40px;
+            text-align: center;
+            padding: 20px 0 12px;
+            border-top: 1px solid #DCE5F0;
+        }
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #1F5A88;
+            color: white;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: 0.2s;
+            font-size: 1rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+        .contact-btn:hover {
+            background: #13466A;
+            transform: scale(1.02);
+        }
+        .contact-email {
+            font-size: 0.85rem;
+            color: #2B6A9E;
+            margin-top: 12px;
+            font-weight: 500;
+        }
+        footer {
+            text-align: center;
+            font-size: 0.7rem;
+            color: #87A3C1;
+            margin-top: 16px;
+        }
+
+        @media (max-width: 680px) {
+            .section-card { padding: 18px; }
+            .summary-value { font-size: 1.3rem; }
+            .fact-input { width: 90px; font-size: 0.75rem; }
+            .btn { padding: 8px 18px; }
+        }
+        @media (max-width: 480px) {
+            .summary-card { padding: 6px 12px; min-width: 130px; }
+            .cost-table th, .cost-table td { padding: 8px 5px; font-size: 0.75rem; }
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <div class="hero">
+        <h1>🏠 СМЕТА РЕМОНТА «ПОД КЛЮЧ»</h1>
+        <div class="subhead">Новостройка 65 м² | Дизайн-проект | Мебель + отделка премиум</div>
+        <div class="budget-chip">🎯 Лимит 9 000 000 ₽ | Актуальные цены Москва, апрель 2026</div>
+    </div>
+
+    <div class="progress-section">
+        <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="step-meta">
+        <span id="stepCounterText">Раздел 1 из 12</span>
+        <span>✏️ Редактируйте фактические данные + добавляйте непредвиденные расходы</span>
+    </div>
+
+    <div id="sectionsRoot"></div>
+
+    <div class="global-total" id="globalTotalBox">
+        <div style="font-weight: 800; font-size: 1.1rem;">📊 ИТОГОВЫЙ БЮДЖЕТ</div>
+        <div class="global-stats">
+            <div class="global-item"><span style="color:#466E96;">📋 План:</span> <strong id="totalPlanSpan">0</strong> ₽</div>
+            <div class="global-item"><span style="color:#0F6E3F;">✅ Факт:</span> <strong id="totalFactSpan">0</strong> ₽</div>
+            <div class="global-item"><span style="color:#E67E22;">📌 Отклонение:</span> <strong id="totalDiffSpan">0</strong> ₽</div>
+        </div>
+        <div class="badge-limit" id="limitWarning">✅ В пределах лимита</div>
+    </div>
+    
+    <!-- КОНТАКТЫ ДЛЯ СВЯЗИ: при нажатии открывается почтовый клиент -->
+    <div class="contact-footer">
+        <a href="mailto:kutsan.nataliya@gmail.com?subject=Вопрос%20по%20смете%20ремонта%2065%20м²&body=Здравствуйте, Наталья!%20У%20меня%20есть%20вопрос%20по%20смете..." class="contact-btn">
+            📧 Написать мне (откроется почта)
+        </a>
+        <div class="contact-email">✉️ kutsan.nataliya@gmail.com</div>
+        <footer>Нажмите на кнопку — автоматически откроется ваша почтовая программа для отправки письма</footer>
+    </div>
+</div>
+
+<script>
+    // ---------- 12 РАЗДЕЛОВ СМЕТЫ (65 кв.м) ----------
+    const sectionsData = [
+        { id: 1, title: "📐 ПРОЕКТНЫЕ РАБОТЫ", desc: "Дизайн-проект 3000₽/м², планировка, 3D-визуализация", rows: [{ name: "Дизайн-проект (65 м²)", pricePerUnit: 3000, quantity: 65, unitNote: "м²" }] },
+        { id: 2, title: "🔨 ДЕМОНТАЖНЫЕ РАБОТЫ", desc: "Демонтаж перегородок, проемы, сантехкабина, вынос мусора", rows: [
+            { name: "Демонтаж перегородок ГКЛ/ПГП", pricePerUnit: 250, quantity: 10, unitNote: "м²" },
+            { name: "Устройство проема в бетоне", pricePerUnit: 4500, quantity: 2, unitNote: "шт" },
+            { name: "Демонтаж сантехкабины", pricePerUnit: 12000, quantity: 1, unitNote: "шт" },
+            { name: "Сбор + вынос мусора (комплекс)", pricePerUnit: 11500, quantity: 1, unitNote: "компл" }
+        ] },
+        { id: 3, title: "⚡ ИНЖЕНЕРНЫЕ РАБОТЫ", desc: "Электрика, сантехника, кондиционирование, стяжка, штукатурка, гидроизоляция", rows: [
+            { name: "Электромонтаж (65 м²)", pricePerUnit: 1500, quantity: 65, unitNote: "м²" },
+            { name: "Сантехразводка (Rehau)", pricePerUnit: 1200, quantity: 65, unitNote: "м²" },
+            { name: "Мульти-сплит (3 внутр. блока)", pricePerUnit: 160000, quantity: 1, unitNote: "компл" },
+            { name: "Штукатурка стен (мех.)", pricePerUnit: 550, quantity: 170, unitNote: "м²" },
+            { name: "Шпаклевка под обои", pricePerUnit: 350, quantity: 170, unitNote: "м²" },
+            { name: "Стяжка пола полусухая", pricePerUnit: 850, quantity: 65, unitNote: "м²" },
+            { name: "Гидроизоляция санузлов", pricePerUnit: 400, quantity: 12, unitNote: "м²" },
+            { name: "Звукоизоляция (стены+пол)", pricePerUnit: 270, quantity: 100, unitNote: "м²" },
+            { name: "Кладка перегородок ПГБ", pricePerUnit: 810, quantity: 15, unitNote: "м²" },
+            { name: "Монтаж ГКЛ коробов (3 шт)", pricePerUnit: 3600, quantity: 3, unitNote: "шт" },
+            { name: "Заделка штроб (150 м.п.)", pricePerUnit: 100, quantity: 150, unitNote: "м.п" },
+            { name: "Монтаж точечных светильников", pricePerUnit: 1000, quantity: 35, unitNote: "шт" }
+        ] },
+        { id: 4, title: "🧱 ЧЕРНОВЫЕ МАТЕРИАЛЫ", desc: "Кабель, трубы, смеси, гидроизоляция, профиль, звукоизоляция", rows: [
+            { name: "Кабель + электрощит (Schneider)", pricePerUnit: 60000, quantity: 1, unitNote: "компл" },
+            { name: "Трубы Rehau + радиаторы Kermi", pricePerUnit: 70000, quantity: 1, unitNote: "компл" },
+            { name: "Сухие смеси Knauf/Ceresit", pricePerUnit: 60000, quantity: 1, unitNote: "компл" },
+            { name: "Гидроизоляция Ceresit", pricePerUnit: 7000, quantity: 1, unitNote: "компл" },
+            { name: "Звукоизоляция (Шуманет)", pricePerUnit: 18000, quantity: 1, unitNote: "компл" },
+            { name: "Профиль и ГКЛ Knauf", pricePerUnit: 35000, quantity: 1, unitNote: "компл" }
+        ] },
+        { id: 5, title: "🎨 ЧИСТОВАЯ ОТДЕЛКА СТЕН", desc: "Обои премиум (как краска), плитка, декоративная штукатурка", rows: [
+            { name: "Подготовка стен гостиная 55м²", pricePerUnit: 350, quantity: 55, unitNote: "м²" },
+            { name: "Подготовка стен спальня 42м²", pricePerUnit: 350, quantity: 42, unitNote: "м²" },
+            { name: "Подготовка стен детская 40м²", pricePerUnit: 350, quantity: 40, unitNote: "м²" },
+            { name: "Подготовка стен коридор 35м²", pricePerUnit: 350, quantity: 35, unitNote: "м²" },
+            { name: "Поклейка обоев (всего 172м²)", pricePerUnit: 450, quantity: 172, unitNote: "м²" },
+            { name: "Облицовка плиткой с/у 1 (стены)", pricePerUnit: 1200, quantity: 28, unitNote: "м²" },
+            { name: "Облицовка плиткой с/у 2 (стены)", pricePerUnit: 1200, quantity: 18, unitNote: "м²" },
+            { name: "Декоративная штукатурка", pricePerUnit: 800, quantity: 10, unitNote: "м²" },
+            { name: "Материалы: обои премиум 172м²", pricePerUnit: 2500, quantity: 172, unitNote: "м²" },
+            { name: "Материалы: плитка Испания", pricePerUnit: 50000, quantity: 1, unitNote: "компл" },
+            { name: "Клей для обоев (Metylan)", pricePerUnit: 2000, quantity: 1, unitNote: "компл" }
+        ] },
+        { id: 6, title: "🪵 ЧИСТОВЫЕ ПОЛЫ (SPC)", desc: "Ламинат SPC 4000₽/м², премиум, керамогранит, плинтус", rows: [
+            { name: "Ламинат SPC гостиная 20,53м²", pricePerUnit: 4000, quantity: 20.53, unitNote: "м²" },
+            { name: "Ламинат SPC спальня 15,27м²", pricePerUnit: 4000, quantity: 15.27, unitNote: "м²" },
+            { name: "Ламинат SPC детская 14,42м²", pricePerUnit: 4000, quantity: 14.42, unitNote: "м²" },
+            { name: "Ламинат SPC коридор 8,67м²", pricePerUnit: 4000, quantity: 8.67, unitNote: "м²" },
+            { name: "Подложка под SPC (58,89м²)", pricePerUnit: 200, quantity: 58.89, unitNote: "м²" },
+            { name: "Укладка ламината", pricePerUnit: 500, quantity: 58.89, unitNote: "м²" },
+            { name: "Керамогранит пол с/у1", pricePerUnit: 2500, quantity: 3.83, unitNote: "м²" },
+            { name: "Керамогранит пол с/у2", pricePerUnit: 2500, quantity: 2.38, unitNote: "м²" },
+            { name: "Укладка керамогранита", pricePerUnit: 1200, quantity: 6.21, unitNote: "м²" },
+            { name: "Плинтус + монтаж (60м.п.)", pricePerUnit: 270, quantity: 60, unitNote: "м.п" },
+            { name: "Запас ламината 10%", pricePerUnit: 4000, quantity: 5.89, unitNote: "м²" }
+        ] },
+        { id: 7, title: "✨ ПОТОЛКИ (натяжные)", desc: "Тканевые матовые и влагостойкие ПВХ", rows: [
+            { name: "Натяжной потолок гостиная", pricePerUnit: 2700, quantity: 20.53, unitNote: "м²" },
+            { name: "Натяжной потолок спальня", pricePerUnit: 2500, quantity: 15.27, unitNote: "м²" },
+            { name: "Натяжной потолок детская", pricePerUnit: 2500, quantity: 14.42, unitNote: "м²" },
+            { name: "Натяжной потолок санузлы (2 шт)", pricePerUnit: 3800, quantity: 6.21, unitNote: "м²" },
+            { name: "Натяжной потолок коридор", pricePerUnit: 2500, quantity: 8.67, unitNote: "м²" }
+        ] },
+        { id: 8, title: "🚪 ДВЕРИ И САНТЕХНИКА", desc: "5 межкомнатных дверей, чугунная ванна 100т.р., инсталляции, техника", rows: [
+            { name: "Межкомнатные двери (5 шт)", pricePerUnit: 15000, quantity: 5, unitNote: "шт" },
+            { name: "Установка дверей (5 шт)", pricePerUnit: 6000, quantity: 5, unitNote: "шт" },
+            { name: "Входная дверь", pricePerUnit: 70000, quantity: 1, unitNote: "шт" },
+            { name: "Чугунная ванна 170×80", pricePerUnit: 100000, quantity: 1, unitNote: "шт" },
+            { name: "Унитаз подвесной + инсталляция", pricePerUnit: 35000, quantity: 1, unitNote: "компл" },
+            { name: "Унитаз компакт Roca", pricePerUnit: 18000, quantity: 1, unitNote: "шт" },
+            { name: "Душевой угол", pricePerUnit: 35000, quantity: 1, unitNote: "шт" },
+            { name: "Раковины с тумбами (2шт)", pricePerUnit: 30000, quantity: 2, unitNote: "компл" },
+            { name: "Смесители Hansgrohe (4 шт)", pricePerUnit: 15000, quantity: 4, unitNote: "шт" },
+            { name: "Полотенцесушители эл. (2шт)", pricePerUnit: 20000, quantity: 2, unitNote: "шт" },
+            { name: "Радиаторы + монтаж (4 компл)", pricePerUnit: 12000, quantity: 4, unitNote: "компл" },
+            { name: "Стиральная машина Bosch", pricePerUnit: 55000, quantity: 1, unitNote: "шт" },
+            { name: "Сушильная машина Bosch", pricePerUnit: 60000, quantity: 1, unitNote: "шт" }
+        ] },
+        { id: 9, title: "🍳 КУХНЯ И ТЕХНИКА", desc: "Гарнитур с кварцевым агломератом, встраиваемая техника Bosch", rows: [
+            { name: "Кухонный гарнитур (5-6 м.п.)", pricePerUnit: 500000, quantity: 1, unitNote: "компл" },
+            { name: "Фартук скинали стекло", pricePerUnit: 35000, quantity: 1, unitNote: "компл" },
+            { name: "Холодильник встраив. Bosch", pricePerUnit: 70000, quantity: 1, unitNote: "шт" },
+            { name: "Духовой шкаф Bosch", pricePerUnit: 65000, quantity: 1, unitNote: "шт" },
+            { name: "Варочная панель индукц.", pricePerUnit: 45000, quantity: 1, unitNote: "шт" },
+            { name: "Посудомоечная машина", pricePerUnit: 50000, quantity: 1, unitNote: "шт" },
+            { name: "Вытяжка", pricePerUnit: 25000, quantity: 1, unitNote: "шт" },
+            { name: "Микроволновая печь", pricePerUnit: 20000, quantity: 1, unitNote: "шт" },
+            { name: "Доставка+установка техники", pricePerUnit: 20000, quantity: 1, unitNote: "компл" },
+            { name: "Доставка кухни", pricePerUnit: 30000, quantity: 1, unitNote: "компл" }
+        ] },
+        { id: 10, title: "🛋️ МЕБЕЛЬ (полная)", desc: "Гостиная, спальня, детская, прихожая, санузлы", rows: [
+            { name: "Мебель кухня-гостиная", pricePerUnit: 250000, quantity: 1, unitNote: "компл" },
+            { name: "Спальня родителей", pricePerUnit: 250000, quantity: 1, unitNote: "компл" },
+            { name: "Детская комната", pricePerUnit: 180000, quantity: 1, unitNote: "компл" },
+            { name: "Коридор (шкаф-купе, банкетка)", pricePerUnit: 120000, quantity: 1, unitNote: "компл" },
+            { name: "Санузел 1 (тумба, шкафчик)", pricePerUnit: 40000, quantity: 1, unitNote: "компл" },
+            { name: "Санузел 2 (мебель)", pricePerUnit: 20000, quantity: 1, unitNote: "компл" },
+            { name: "Доставка и сборка мебели", pricePerUnit: 60000, quantity: 1, unitNote: "компл" }
+        ] },
+        { id: 11, title: "💡 ОСВЕЩЕНИЕ, ТЕКСТИЛЬ", desc: "Люстры, треки, шторы, ковры, декор, постельное", rows: [
+            { name: "Люстры, светильники, трек.система", pricePerUnit: 115000, quantity: 1, unitNote: "компл" },
+            { name: "Шторы, карнизы, римские шторы", pricePerUnit: 110000, quantity: 1, unitNote: "компл" },
+            { name: "Постельное белье, одеяла", pricePerUnit: 25000, quantity: 1, unitNote: "компл" },
+            { name: "Ковры (гостиная, спальни)", pricePerUnit: 30000, quantity: 1, unitNote: "компл" },
+            { name: "Декор, зеркала, вазы", pricePerUnit: 60000, quantity: 1, unitNote: "компл" },
+            { name: "Полотенца", pricePerUnit: 6000, quantity: 1, unitNote: "компл" }
+        ] },
+        { id: 12, title: "🚛 ЛОГИСТИКА И УБОРКА", desc: "Доставка, подъем, вынос мусора, клининг", rows: [
+            { name: "Доставка материалов (комплекс)", pricePerUnit: 30000, quantity: 1, unitNote: "компл" },
+            { name: "Доставка плитки/ламината", pricePerUnit: 5000, quantity: 1, unitNote: "компл" },
+            { name: "Доставка дверей/сантехники", pricePerUnit: 10000, quantity: 1, unitNote: "компл" },
+            { name: "Подъем материалов (без лифта)", pricePerUnit: 30000, quantity: 1, unitNote: "компл" },
+            { name: "Вынос мусора контейнер", pricePerUnit: 24000, quantity: 1, unitNote: "компл" },
+            { name: "Финальный клининг", pricePerUnit: 20000, quantity: 1, unitNote: "компл" }
+        ] }
+    ];
+
+    // Добавляем 3 пустые строки для непредвиденных расходов в каждый раздел
+    for (let s = 0; s < sectionsData.length; s++) {
+        for (let i = 0; i < 3; i++) {
+            sectionsData[s].rows.push({
+                name: `📌 [НЕПРЕДВИДЕННЫЕ] Доп. расходы ${i+1}`,
+                pricePerUnit: 0,
+                quantity: 1,
+                unitNote: "компл",
+                isExtra: true
+            });
+        }
+    }
+
+    // ----- ИНИЦИАЛИЗАЦИЯ ДАННЫХ: факт = план для обычных строк, для доп. строк = 0 -----
+    let factValues = [];       // [sectionIdx][rowIdx] = текущая факт сумма
+    let planTotalsBySection = [];
+
+    function initData() {
+        factValues = [];
+        planTotalsBySection = [];
+        for (let s = 0; s < sectionsData.length; s++) {
+            let secPlan = 0;
+            const rowFacts = [];
+            for (let r = 0; r < sectionsData[s].rows.length; r++) {
+                const row = sectionsData[s].rows[r];
+                const planSum = row.pricePerUnit * row.quantity;
+                secPlan += planSum;
+                if (row.isExtra) {
+                    rowFacts.push(0);   // пустые строки — факт 0
+                } else {
+                    rowFacts.push(planSum);
+                }
+            }
+            planTotalsBySection.push(secPlan);
+            factValues.push(rowFacts);
+        }
+    }
+    initData();
+
+    let currentSectionIdx = 0;
+    const totalSections = sectionsData.length;
+
+    // DOM-элементы
+    const sectionsRoot = document.getElementById("sectionsRoot");
+    const progressFill = document.getElementById("progressFill");
+    const stepCounterSpan = document.getElementById("stepCounterText");
+    const totalPlanSpan = document.getElementById("totalPlanSpan");
+    const totalFactSpan = document.getElementById("totalFactSpan");
+    const totalDiffSpan = document.getElementById("totalDiffSpan");
+    const limitWarning = document.getElementById("limitWarning");
+
+    function updateGlobalTotals() {
+        let globalPlan = 0, globalFact = 0;
+        for (let s = 0; s < sectionsData.length; s++) {
+            globalPlan += planTotalsBySection[s];
+            for (let r = 0; r < factValues[s].length; r++) {
+                globalFact += factValues[s][r];
+            }
+        }
+        totalPlanSpan.innerText = Math.round(globalPlan).toLocaleString('ru-RU');
+        totalFactSpan.innerText = Math.round(globalFact).toLocaleString('ru-RU');
+        const diff = globalFact - globalPlan;
+        totalDiffSpan.innerText = (diff > 0 ? '+' : '') + Math.round(diff).toLocaleString('ru-RU');
+        const limit = 9_000_000;
+        if (globalFact > limit) {
+            limitWarning.innerHTML = "⚠️ ПРЕВЫШЕНИЕ ЛИМИТА 9 млн ₽!";
+            limitWarning.style.background = "#FFEBE6";
+            limitWarning.style.color = "#B13E3E";
+        } else {
+            limitWarning.innerHTML = "✅ В пределах бюджета 9 000 000 ₽";
+            limitWarning.style.background = "#EAF6EA";
+            limitWarning.style.color = "#2C6E2C";
+        }
+    }
+
+    function updateNavigationMeta() {
+        const percent = ((currentSectionIdx + 1) / totalSections) * 100;
+        progressFill.style.width = `${percent}%`;
+        stepCounterSpan.innerText = `Раздел ${currentSectionIdx+1} из ${totalSections} | ${sectionsData[currentSectionIdx].title}`;
+    }
+
+    function renderCurrentSection() {
+        const sec = sectionsData[currentSectionIdx];
+        let factSectionSum = 0;
+        for (let i = 0; i < factValues[currentSectionIdx].length; i++) factSectionSum += factValues[currentSectionIdx][i];
+
+        let html = `<div class="section-card">
+            <div class="section-header">
+                <div class="section-title">${sec.title}</div>
+                <div class="section-id">Раздел ${sec.id} / ${totalSections}</div>
+            </div>
+            <div class="section-desc">${sec.desc}</div>
+            <div class="table-responsive">
+                <table class="cost-table">
+                    <thead>
+                        <tr><th>Статья расходов</th><th>Цена за ед. (план)</th><th>Кол-во</th><th>План сумма (₽)</th>
+                            <th>Факт цена за ед. (руб)</th><th>Факт стоимость (руб)</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+        for (let i = 0; i < sec.rows.length; i++) {
+            const row = sec.rows[i];
+            const planSumRow = row.pricePerUnit * row.quantity;
+            const currentFact = factValues[currentSectionIdx][i];
+            let factPricePerUnit = (row.quantity > 0 && currentFact !== undefined && !(row.isExtra && currentFact === 0)) ? (currentFact / row.quantity).toFixed(0) : '';
+            const isExtraRow = row.isExtra === true;
+            const displayFactPrice = (isExtraRow && currentFact === 0) ? '' : factPricePerUnit;
+            html += `<tr style="${isExtraRow ? 'background:#FFF9E8' : ''}">
+                        <td class="plan-text">${row.name}</td>
+                        <td>${row.pricePerUnit.toLocaleString('ru-RU')} ₽</td>
+                        <td>${row.quantity} ${row.unitNote || ''}</td>
+                        <td class="sum-plan-cell">${Math.round(planSumRow).toLocaleString('ru-RU')} ₽</td>
+                        <td><input type="number" class="fact-input fact-price-input" data-row="${i}" value="${displayFactPrice}" step="1" placeholder="цена за ед."> ₽</td>
+                        <td><input type="number" class="fact-input fact-total-input" data-row="${i}" value="${Math.round(currentFact)}" step="1" placeholder="факт сумма"> ₽</td>
+                      </tr>`;
+        }
+        html += `</tbody>
+                </table>
+            </div>
+            <div class="section-summary">
+                <div class="summary-card"><div class="summary-label">📋 ПЛАНОВАЯ СУММА РАЗДЕЛА</div><div class="summary-value">${Math.round(planTotalsBySection[currentSectionIdx]).toLocaleString('ru-RU')} ₽</div></div>
+                <div class="summary-card"><div class="summary-label">✅ ФАКТИЧЕСКАЯ СУММА (РАЗДЕЛ)</div><div class="summary-value fact" id="factSectionSum">${Math.round(factSectionSum).toLocaleString('ru-RU')} ₽</div></div>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-outline" id="prevBtn" ${currentSectionIdx === 0 ? 'disabled' : ''}>◀ НАЗАД</button>
+                <button class="btn btn-primary" id="nextBtn" ${currentSectionIdx === totalSections-1 ? 'disabled' : ''}>ДАЛЕЕ ▶</button>
+            </div>
+        </div>`;
+        sectionsRoot.innerHTML = html;
+
+        // Обработчики для факт-сумм
+        document.querySelectorAll('.fact-total-input').forEach(input => {
+            const rowIdx = parseInt(input.dataset.row);
+            input.addEventListener('change', (e) => {
+                let newVal = parseFloat(e.target.value);
+                if (isNaN(newVal)) newVal = factValues[currentSectionIdx][rowIdx];
+                factValues[currentSectionIdx][rowIdx] = newVal;
+                updateSectionFactDisplay();
+                updateGlobalTotals();
+                renderCurrentSection();
+            });
+        });
+        document.querySelectorAll('.fact-price-input').forEach(input => {
+            const rowIdx = parseInt(input.dataset.row);
+            input.addEventListener('change', (e) => {
+                let newPrice = parseFloat(e.target.value);
+                if (isNaN(newPrice)) return;
+                const qty = sectionsData[currentSectionIdx].rows[rowIdx].quantity;
+                const newTotal = newPrice * qty;
+                factValues[currentSectionIdx][rowIdx] = newTotal;
+                updateSectionFactDisplay();
+                updateGlobalTotals();
+                renderCurrentSection();
+            });
+        });
+
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        if (prevBtn) prevBtn.addEventListener('click', () => { if (currentSectionIdx > 0) { currentSectionIdx--; updateAll(); } });
+        if (nextBtn) nextBtn.addEventListener('click', () => { if (currentSectionIdx < totalSections-1) { currentSectionIdx++; updateAll(); } });
+    }
+
+    function updateSectionFactDisplay() {
+        let sum = 0;
+        for (let v of factValues[currentSectionIdx]) sum += v;
+        const factSpan = document.getElementById('factSectionSum');
+        if (factSpan) factSpan.innerText = Math.round(sum).toLocaleString('ru-RU');
+    }
+
+    function updateAll() {
+        updateNavigationMeta();
+        renderCurrentSection();
+        updateGlobalTotals();
+    }
+
+    updateAll();
+</script>
+</body>
+</html>
